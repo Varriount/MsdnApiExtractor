@@ -96,7 +96,7 @@ class ApiExporter(BaseItemExporter):
         self.file = open(file_name, 'w+')
         self.file_name = file_name
 
-    def close():
+    def close(self):
         self.file.close()
 
     def export_item(self, item):
