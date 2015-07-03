@@ -9,12 +9,12 @@
 #
 
 AUTOTHROTTLE_ENABLED = 1
-BOT_NAME = 'code_scraper'
+BOT_NAME = 'MsdnApiExtractor'
 COOKIES_ENABLED = False
 DEPTH_LIMIT = 5
 DOWNLOAD_DELAY = 2
 ITEM_PIPELINES = {
-    'code_scraper.pipelines.ApiExportPipeline': 1
+    'MsdnApiExtractor.pipelines.ApiExportPipeline': 1
 }
 NEWSPIDER_MODULE = 'code_scraper.spiders'
 RETRY_ENABLED = True
