@@ -16,10 +16,10 @@ DOWNLOAD_DELAY = 2
 ITEM_PIPELINES = {
     'MsdnApiExtractor.pipelines.ApiExportPipeline': 1
 }
-NEWSPIDER_MODULE = 'code_scraper.spiders'
+NEWSPIDER_MODULE = 'MsdnApiExtractor.spiders'
 RETRY_ENABLED = True
 ROBOTSTXT_OBEY = True
-SPIDER_MODULES = ['code_scraper.spiders']
+SPIDER_MODULES = ['MsdnApiExtractor.spiders']
 USER_AGENT = ('Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 '
               '(KHTML, like Gecko) Chrome/33.0.1750.117 Safari/537.36')
 SCHEDULER_DISK_QUEUE = 'scrapy.squeues.PickleFifoDiskQueue'
