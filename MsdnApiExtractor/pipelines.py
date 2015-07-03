@@ -131,7 +131,7 @@ class ApiExportPipeline(object):
         self.links_log = open('crawled_links.txt', 'w')
         #self.exporters = ApiExporterDict()
         self.current_file_name = ''
-        self.current_file = None
+        self.exporter = None
         self.spiders = 0
 
     def open_spider(self, spider):
