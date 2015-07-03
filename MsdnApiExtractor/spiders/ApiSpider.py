@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 import re
-from code_scraper.items import ApiEntry
+from MsdnApiExtractor.items import ApiEntry
 from scrapy.contrib.spiders import CrawlSpider, Rule
 from scrapy.contrib.linkextractors import LinkExtractor
 from string import maketrans
