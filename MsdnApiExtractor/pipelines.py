@@ -94,6 +94,7 @@ class ApiExporter(BaseItemExporter):
     def __init__(self, file_name, **kwargs):
         self._configure(kwargs, dont_fail=True)
         self.file = open(file_name, 'w+')
+        self.file_name = file_name
 
     def close():
         self.file.close()
@@ -108,11 +109,12 @@ class ApiExporter(BaseItemExporter):
         pre_result.append("\n\n")
         contents = u'\n'.join(pre_result).replace(u'\x00', u'').encode('utf-8')
 
-        old_position = file.tell()
+        old_position = self.file.tell()
         self.file.write(contents)
         self.file.flush()
         os.fsync(self.file.fileno()),
-        assert(old_position + len(contents) == file.tell())
+        if (old_position + len(contents) == self.file.tell()):
+            print("Position/Pointer Mismatch in {}".format(self.file_name))
 
 
 class ApiExporterDict(dict):
