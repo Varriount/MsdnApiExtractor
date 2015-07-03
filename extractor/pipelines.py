@@ -91,9 +91,12 @@ def serialize_tables(tables):
 
 class ApiExporter(BaseItemExporter):
 
-    def __init__(self, file_handle, **kwargs):
+    def __init__(self, file_name, **kwargs):
         self._configure(kwargs, dont_fail=True)
-        self.file = file_handle
+        self.file = open(file_name, 'w+')
+
+    def close():
+        self.file.close()
 
     def export_item(self, item):
         pre_result = []
@@ -124,7 +127,9 @@ class ApiExportPipeline(object):
 
     def __init__(self):
         self.links_log = open('crawled_links.txt', 'w')
-        self.exporters = ApiExporterDict()
+        #self.exporters = ApiExporterDict()
+        self.current_file_name = ''
+        self.current_file = None
         self.spiders = 0
 
     def open_spider(self, spider):
@@ -135,6 +140,7 @@ class ApiExportPipeline(object):
         if self.spiders == 0:
             for exporter in self.exporters.items():
                 exporter.file.close()
+            self.exporters = ApiExporterDict()
 
     def process_item(self, item, spider):
         is_empty = (
@@ -157,8 +163,11 @@ class ApiExportPipeline(object):
             file_name = extract_filename(file_name) or 'other'
             file_name += '.txt'
 
-            exporter = self.exporters[file_name]
-            exporter.export_item(item)
+            if file_name != self.current_file_name:
+                if self.exporter is not None:
+                    self.exporter.close()
+                self.exporter = ApiExporter(file_name)
+            self.exporter.export_item(item)
 
         self.links_log.write(log_line.replace('\x00', '').encode("utf-8"))
         return item
