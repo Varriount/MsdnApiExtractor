@@ -11,7 +11,7 @@
 AUTOTHROTTLE_ENABLED = 1
 BOT_NAME = 'code_scraper'
 COOKIES_ENABLED = False
-DEPTH_LIMIT = 10
+DEPTH_LIMIT = 5
 DOWNLOAD_DELAY = 2
 ITEM_PIPELINES = {
     'code_scraper.pipelines.ApiExportPipeline': 1

@@ -105,15 +105,17 @@ class ApiExporter(BaseItemExporter):
         pre_result.append("\n\n")
         contents = u'\n'.join(pre_result).replace(u'\x00', u'').encode('utf-8')
 
+        old_position = file.tell()
         self.file.write(contents)
         self.file.flush()
         os.fsync(self.file.fileno()),
+        assert(old_position + len(contents) == file.tell())
 
 
 class ApiExporterDict(dict):
 
     def __missing__(self, key):
-        value = ApiExporter(open(key, 'w+', 2))
+        value = ApiExporter(open(key, 'w'))
         self[key] = value
         return value
 
@@ -121,7 +123,7 @@ class ApiExporterDict(dict):
 class ApiExportPipeline(object):
 
     def __init__(self):
-        self.links_log = open('crawled_links.txt', 'w+', 2)
+        self.links_log = open('crawled_links.txt', 'w')
         self.exporters = ApiExporterDict()
         self.spiders = 0
 
@@ -147,8 +149,8 @@ class ApiExportPipeline(object):
             log_line = "Non-Empty URL: '{0}'\n".format(item['url'])
             get_metadata = item['metadata'].get
             file_name = (
-                get_metadata('dll') or
                 get_metadata('header') or
+                get_metadata('dll') or
                 get_metadata('library') or
                 ''
             )

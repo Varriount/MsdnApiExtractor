@@ -34,6 +34,7 @@ def xpath_extract(resp, path):
         .strip(strip_chars)
         .replace(u"\xa0", u' ')
         .replace(u"\t", u' ')
+        .replace(u"\x00", u'')
     )
 
 
@@ -41,16 +42,22 @@ class ApiSpider(CrawlSpider):
     name = "ApiSpider"
     allowed_domains = [msdn_domain]
     start_urls = (
-        msdn_url + '/dn933214(v=vs.85).aspx',
-        msdn_url + '/ff818516(v=vs.85).aspx',
+        msdn_url + '/dn933214.aspx',
+        msdn_url + '/ff818516.aspx',
     )
     rules = [
         Rule(
             LinkExtractor(allow=msdn_filter, deny=deny_filter),
             callback='parse_entry',
+            process_links='process_links',
             follow=True
         )
     ]
+
+    def process_links(self, links):
+        for link in links:
+            link.url = re.sub('\(v=.*?\)', '', link.url)
+        return links
 
     def parse_entry(self, response):
         result = ApiEntry()
