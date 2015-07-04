@@ -3,6 +3,7 @@ import warnings
 from scrapy.contrib.exporter import BaseItemExporter
 import re
 import os
+import logging
 
 # Define your item pipelines here
 #
@@ -114,7 +115,9 @@ class ApiExporter(BaseItemExporter):
         self.file.flush()
         os.fsync(self.file.fileno()),
         if (old_position + len(contents) == self.file.tell()):
-            print("Position/Pointer Mismatch in {}".format(self.file_name))
+            logging.warning(
+                "Position/Pointer Mismatch in {}".format(self.file_name)
+            )
 
 
 class ApiExporterDict(dict):
