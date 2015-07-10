@@ -54,9 +54,18 @@ class ApiSpider(CrawlSpider):
         )
     ]
 
+    processed_links = set()
     def process_links(self, links):
-        for link in links:
-            link.url = re.sub('\(v=.*?\)', '', link.url)
+        i = 0
+        while i < len(links):
+            link = links[i]
+            processed_url = re.sub('\(v=.*?\)', '', link.url)
+            if link.url in processed_links:
+                del(links[i])
+            else:
+                link.url = processed_url
+                processed_links.add(processed_url)
+                i += 1
         return links
 
     def parse_entry(self, response):
