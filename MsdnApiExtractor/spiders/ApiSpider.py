@@ -60,11 +60,11 @@ class ApiSpider(CrawlSpider):
         while i < len(links):
             link = links[i]
             processed_url = re.sub('\(v=.*?\)', '', link.url)
-            if link.url in processed_links:
+            if link.url in self.processed_links:
                 del(links[i])
             else:
                 link.url = processed_url
-                processed_links.add(processed_url)
+                self.processed_links.add(processed_url)
                 i += 1
         return links
 
